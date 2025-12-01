@@ -1,1 +1,9 @@
+# Dipendenze base per esecuzione app
 Flask>=2.3.0
+
+# Dipendenze per build e distribuzione (opzionali)
+# Installare solo se vuoi creare eseguibili:
+# pip install pyinstaller>=6.0.0
+
+# Per app desktop alternativa (opzionale):
+# pip install eel>=0.16.0

@@ -30,6 +30,12 @@ def main():
 ╚═══════════════════════════════════════════════════════════════╝
     """)
     
+    # Vai alla directory root del progetto
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    root_dir = os.path.dirname(script_dir)
+    os.chdir(root_dir)
+    print(f"📁 Directory progetto: {root_dir}\n")
+    
     # Verifica PyInstaller
     print("\n[1/6] Verifica PyInstaller...")
     result = subprocess.run("pip show pyinstaller", shell=True, capture_output=True)
@@ -108,7 +114,12 @@ def main():
         print("  ✅ static/")
     
     # Copia file di esempio
-    for file in ["esempio_import.csv", "ISTRUZIONI.txt", "README.md"]:
+    if os.path.exists("examples/esempio_import.csv"):
+        shutil.copy2("examples/esempio_import.csv", "dist")
+        print("  ✅ examples/esempio_import.csv")
+    
+    # Copia documentazione principale
+    for file in ["README.md", "LICENSE"]:
         if os.path.exists(file):
             shutil.copy2(file, "dist")
             print(f"  ✅ {file}")

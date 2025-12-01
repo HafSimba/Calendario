@@ -81,9 +81,6 @@ htmlcov/
 *.bak
 *.orig
 
-# File specifici dell'utente (non condividere dati personali)
-lezioni_corso.csv
-calendariotocsv.md
-migrate_db.py
-
-# Note: esempio_import.csv DEVE essere incluso come template!
+# File personali utente (non condividere)
+# Aggiungi qui i tuoi CSV/file personali se necessario
+# esempio: mie_lezioni.csv

@@ -20,6 +20,12 @@ def create_distribution_zip():
 ╚═══════════════════════════════════════════════════════════════╝
     """)
     
+    # Vai alla directory root del progetto
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    root_dir = os.path.dirname(script_dir)
+    os.chdir(root_dir)
+    print(f"📁 Directory progetto: {root_dir}\n")
+    
     # Nome e versione
     version = "1.0"
     date_str = datetime.now().strftime("%Y%m%d")
@@ -34,9 +40,7 @@ def create_distribution_zip():
         'run.bat',
         'run.sh',
         'README.md',
-        'ISTRUZIONI.txt',
-        'GUIDA_DISTRIBUZIONE.md',
-        'esempio_import.csv',
+        'LICENSE',
         'Dockerfile',
         'docker-compose.yml',
         '.gitignore'
@@ -45,7 +49,10 @@ def create_distribution_zip():
     # Directory da includere
     dirs_to_include = [
         'templates',
-        'static'
+        'static',
+        'docs',
+        'scripts',
+        'examples'
     ]
     
     # Crea ZIP

@@ -124,20 +124,38 @@ Poi apri il browser su: **http://127.0.0.1:5000**
 
 📖 **Guida completa:** Vedi `GUIDA_DISTRIBUZIONE.md` per tutti i dettagli e troubleshooting
 
-## 📁 Struttura File
+## 📁 Struttura Progetto
 
 ```
 Calendario/
-├── app.py              # Applicazione Flask principale
-├── requirements.txt    # Dipendenze Python
-├── run.sh             # Script avvio Linux/macOS
-├── run.bat            # Script avvio Windows
-├── esempio_import.csv  # File CSV di esempio
-├── README.md          # Questa guida
-├── templates/
-│   └── index.html     # Interfaccia utente
-└── data/
-    └── calendario.db  # Database SQLite (creato automaticamente)
+├── app.py                      # Applicazione Flask principale
+├── requirements.txt            # Dipendenze Python
+├── run.bat / run.sh           # Launcher multi-piattaforma
+├── Dockerfile                  # Configurazione Docker
+├── docker-compose.yml          # Orchestrazione Docker
+│
+├── templates/                  # Template HTML/Jinja2
+│   └── index.html
+│
+├── static/                     # File statici (CSS/JS)
+│   └── app.js
+│
+├── data/                       # Database SQLite
+│   └── .gitkeep               # (calendario.db creato automaticamente)
+│
+├── docs/                       # Documentazione
+│   ├── GUIDA_UTENTE.md        # Manuale utente completo
+│   ├── GUIDA_DISTRIBUZIONE.md # Guida distribuzione e build
+│   └── CONTRIBUTING.md        # Guida per contributori
+│
+├── scripts/                    # Script di build e utility
+│   ├── build_exe.py           # Crea eseguibile Windows
+│   ├── build_exe.bat          # Build Windows (batch)
+│   ├── create_package.py      # Crea pacchetto ZIP
+│   └── menu.bat               # Menu interattivo
+│
+└── examples/                   # File di esempio
+    └── esempio_import.csv     # Template CSV per import
 ```
 
 ## 📥 Import CSV
@@ -157,9 +175,9 @@ L'app supporta l'importazione da file CSV con le seguenti colonne:
 | presente | Stato presenza (Sì/No, 1/0, true/false) | Sì |
 | note | Note opzionali | Prima lezione |
 
-**Separatore**: punto e virgola (;)
+**Separatore**: punto e virgola (`;`)
 
-Vedi `esempio_import.csv` per un esempio completo.
+Vedi `examples/esempio_import.csv` per un esempio completo.
 
 ## 🔄 Portabilità - Copia e Usa Ovunque!
 
@@ -190,6 +208,32 @@ Il database `data/calendario.db` contiene tutti i dati e viene copiato insieme a
 - I dati sono salvati localmente in `data/calendario.db`
 - Funziona completamente offline
 - Supporta solo un utente alla volta (uso locale)
+
+## 📚 Documentazione
+
+- 📖 **[Guida Utente Completa](docs/GUIDA_UTENTE.md)** - Manuale dettagliato
+- 📦 **[Guida Distribuzione](docs/GUIDA_DISTRIBUZIONE.md)** - Build e deploy
+- 🤝 **[Contributing](docs/CONTRIBUTING.md)** - Come contribuire
+
+## 🤝 Contribuire
+
+I contributi sono benvenuti! Leggi [CONTRIBUTING.md](docs/CONTRIBUTING.md) per:
+- Setup ambiente di sviluppo
+- Linee guida codice
+- Processo di pull request
+- Aree di contributo
+
+## 📄 Licenza
+
+MIT License - Vedi file [LICENSE](LICENSE)
+
+## 🐛 Segnalazione Bug
+
+Apri una [Issue su GitHub](https://github.com/HafSimba/Calendario/issues) con:
+- Descrizione del problema
+- Passi per riprodurlo
+- Sistema operativo e versione Python
+- Screenshot (se applicabile)
 
 ---
 
