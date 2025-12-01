@@ -27,12 +27,16 @@ wheels/
 # PyInstaller
 *.manifest
 *.spec
+build/
+dist/
 
-# Database
+# Database (ignora database con dati reali, ma permetti struttura)
 *.db
 *.db-journal
 data/*.db
 data/*.db-journal
+# Mantieni la cartella data/ vuota con .gitkeep
+!data/.gitkeep
 
 # IDE
 .vscode/
@@ -51,12 +55,15 @@ tmp/
 Thumbs.db
 desktop.ini
 
-# Build artifacts
+# Build artifacts (ignorare output di build)
 build_output/
 installer_output/
 *.tar
 *.tar.gz
-*.zip
+
+# ZIP di distribuzione (ignorare pacchetti generati)
+CalendarioPresenze*.zip
+*Portable*.zip
 
 # Virtual environments
 venv/
@@ -73,3 +80,10 @@ htmlcov/
 *.tmp
 *.bak
 *.orig
+
+# File specifici dell'utente (non condividere dati personali)
+lezioni_corso.csv
+calendariotocsv.md
+migrate_db.py
+
+# Note: esempio_import.csv DEVE essere incluso come template!

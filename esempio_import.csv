@@ -1,0 +1,7 @@
+giorno;data;aula;orario_inizio;orario_fine;totale_ore;nome_lezione;professore;presente;note
+Lunedì;2025-12-01;Aula 101;09:00;11:00;2;Matematica;Prof. Rossi;No;Prima lezione
+Lunedì;2025-12-01;Aula 101;11:15;13:15;2;Fisica;Prof. Bianchi;No;
+Martedì;2025-12-02;Aula 202;14:00;16:00;2;Informatica;Prof. Verdi;No;Laboratorio
+Mercoledì;2025-12-03;Aula 101;09:00;12:00;3;Chimica;Prof. Neri;No;
+Giovedì;2025-12-04;Aula 303;15:00;17:00;2;Storia;Prof. Gialli;No;
+Venerdì;2025-12-05;Aula 101;10:00;13:00;3;Inglese;Prof. Blu;No;Conversazione
