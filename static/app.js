@@ -136,13 +136,6 @@ function renderCarousel() {
                     <div class="cube-month">${month}</div>
                     <div class="cube-lessons">${lessons.length} ${lessons.length === 1 ? 'lezione' : 'lezioni'}</div>
                 </div>
-                <div class="cube-expanded-content">
-                    <div class="expanded-header">
-                        <h3>${dayName} ${dayNum} ${month}</h3>
-                        <button class="expanded-close" onclick="event.stopPropagation(); closeExpandedCube()">✕</button>
-                    </div>
-                    ${lessons.map(l => renderLessonCard(l)).join('')}
-                </div>
             </div>
         `;
     }).join('');
@@ -185,23 +178,27 @@ function renderLessonCard(l) {
 }
 
 function expandCube(date) {
-    if (expandedCubeId === date) return;
-    closeExpandedCube();
+    const lessons = filteredLezioni.filter(l => l.data === date);
+    if (lessons.length === 0) return;
     
-    const cube = document.querySelector(`.day-cube[data-date="${date}"]`);
-    if (cube) {
-        expandedCubeId = date;
-        cube.classList.add('expanded');
-        document.getElementById('cubeOverlay').classList.add('active');
-    }
+    const dateObj = new Date(date);
+    const dayName = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'][dateObj.getDay()];
+    const dayNum = dateObj.getDate();
+    const month = mesiItaliani[dateObj.getMonth()];
+    
+    const modal = document.getElementById('cubeDetailsModal');
+    const title = document.getElementById('cubeDetailsTitle');
+    const content = document.getElementById('cubeDetailsContent');
+    
+    title.innerHTML = `${dayName} ${dayNum} ${month} ${dateObj.getFullYear()}`;
+    content.innerHTML = lessons.map(l => renderLessonCard(l)).join('');
+    
+    modal.classList.add('active');
+    document.getElementById('cubeOverlay').classList.add('active');
 }
 
 function closeExpandedCube() {
-    if (expandedCubeId) {
-        const cube = document.querySelector(`.day-cube[data-date="${expandedCubeId}"]`);
-        if (cube) cube.classList.remove('expanded');
-        expandedCubeId = null;
-    }
+    document.getElementById('cubeDetailsModal').classList.remove('active');
     document.getElementById('cubeOverlay').classList.remove('active');
 }
 

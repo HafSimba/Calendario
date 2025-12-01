@@ -192,21 +192,6 @@
         .day-cube.today .cube-date,
         .day-cube.today .cube-lessons { color: white; }
         
-        .day-cube.expanded {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) !important;
-            width: 90%;
-            max-width: 600px;
-            height: auto;
-            min-height: 400px;
-            max-height: 80vh;
-            z-index: 1000;
-            overflow-y: auto;
-            padding: 0;
-        }
-        
         .cube-day-name { font-size: 1rem; font-weight: 600; color: #666; text-transform: uppercase; }
         .cube-date { font-size: 3rem; font-weight: 700; color: var(--dark); line-height: 1; }
         .cube-month { font-size: 1rem; color: #888; margin-top: 5px; }
@@ -226,34 +211,6 @@
         .cube-status.parziale { background: var(--warning); }
         .cube-status.mixed { background: linear-gradient(135deg, var(--success) 50%, var(--danger) 50%); }
         
-        .cube-expanded-content { display: none; padding: 25px; width: 100%; }
-        .day-cube.expanded .cube-compact-content { display: none; }
-        .day-cube.expanded .cube-expanded-content { display: block; }
-        
-        .expanded-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--border);
-        }
-        
-        .expanded-header h3 { font-size: 1.5rem; color: var(--dark); }
-        
-        .expanded-close {
-            width: 36px;
-            height: 36px;
-            border: none;
-            background: var(--light);
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-        }
-        
-        .expanded-close:hover { background: var(--danger); color: white; }
-        
         .lesson-card {
             background: var(--light);
             border-radius: 12px;
@@ -262,9 +219,9 @@
             border-left: 4px solid var(--primary);
         }
         
-        .lesson-card.presente { border-left-color: var(--success); }
-        .lesson-card.assente { border-left-color: var(--danger); }
-        .lesson-card.parziale { border-left-color: var(--warning); }
+        .lesson-card.presente { border-left-color: var(--success); background: #d4edda; }
+        .lesson-card.assente { border-left-color: var(--danger); background: #f8d7da; }
+        .lesson-card.parziale { border-left-color: var(--warning); background: #fff3cd; }
         
         .lesson-card-header {
             display: flex;
@@ -653,6 +610,19 @@
             <button class="carousel-nav next" onclick="carouselNext()">❯</button>
         </div>
         <div class="cube-overlay" id="cubeOverlay" onclick="closeExpandedCube()"></div>
+        
+        <!-- Modal dettagli giorno -->
+        <div class="modal-overlay" id="cubeDetailsModal">
+            <div class="modal" style="max-width: 900px;">
+                <div class="modal-header">
+                    <h2 id="cubeDetailsTitle">Dettagli Giorno</h2>
+                    <button class="modal-close" onclick="closeExpandedCube()">&times;</button>
+                </div>
+                <div class="modal-body" id="cubeDetailsContent" style="max-height: 60vh; overflow-y: auto;">
+                    <!-- Lesson cards will be injected here -->
+                </div>
+            </div>
+        </div>
         
         <div id="tableView" class="table-container" style="display: none;">
             <table id="lezioniTable">
