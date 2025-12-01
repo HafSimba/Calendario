@@ -15,9 +15,41 @@ Applicazione web locale e portabile per tracciare le presenze e assenze alle lez
 - ✅ Database SQLite locale (portabile)
 - ✅ Interfaccia moderna e responsive
 
-## 🚀 Avvio Rapido (100% Automatico)
+## 🚀 Avvio Rapido - Scegli il Tuo Metodo!
 
-### Windows - Plug & Play 🎯
+### 🎯 **METODO 1: Eseguibile Windows (CONSIGLIATO - Zero Installazione)**
+
+**Per utenti che NON hanno Python installato:**
+
+1. **Scarica** il pacchetto `CalendarioPresenze_Portable.zip`
+2. **Estrai** il contenuto in una cartella
+3. **Doppio click** su `CalendarioPresenze.exe`
+4. **Fatto!** Il browser si apre automaticamente
+
+✅ Vantaggi:
+- Nessuna installazione richiesta
+- Funziona anche su PC con restrizioni
+- Portabile (funziona da chiavetta USB)
+- Dimensione: ~30-40 MB
+
+📦 **Come creare l'eseguibile** (per sviluppatori):
+```bash
+# Metodo automatico
+python build_exe.py
+
+# Oppure con batch
+build_exe.bat
+
+# L'eseguibile sarà in: dist/CalendarioPresenze.exe
+```
+
+---
+
+### 🎯 **METODO 2: Script Python (100% Automatico)**
+
+**Per utenti con Python installato o che vogliono installarlo:**
+
+#### Windows - Plug & Play 🎯
 1. **Scarica o copia** l'intera cartella `Calendario` sul tuo PC
 2. **Doppio click** su `run.bat`
 3. **Al primo avvio**: Lo script controllerà automaticamente:
@@ -30,14 +62,37 @@ Applicazione web locale e portabile per tracciare le presenze e assenze alle lez
 
 > **Nota**: Se Python non è installato, lo script ti chiederà il permesso e aprirà la pagina di download. Ricordati di selezionare **"Add Python to PATH"** durante l'installazione!
 
-### Linux / macOS
+#### Linux / macOS
 ```bash
 chmod +x run.sh
 ./run.sh
 ```
 Lo script installerà automaticamente tutto il necessario al primo avvio.
 
-### Avvio Manuale (Opzionale)
+---
+
+### 🎯 **METODO 3: Docker (Multi-utente/Server)**
+
+**Per deploy su server o uso multi-utente:**
+
+```bash
+# Avvio rapido
+docker-compose up -d
+
+# Oppure build manuale
+docker build -t calendario-presenze .
+docker run -p 5000:5000 -v $(pwd)/data:/app/data calendario-presenze
+```
+
+✅ Vantaggi:
+- Isolamento completo
+- Deploy su server remoto
+- Backup facile del volume data/
+
+---
+
+### 🎯 **METODO 4: Avvio Manuale (Opzionale)**
+
 ```bash
 # Crea ambiente virtuale
 python3 -m venv venv
@@ -54,6 +109,20 @@ python app.py
 ```
 
 Poi apri il browser su: **http://127.0.0.1:5000**
+
+---
+
+## 📋 **Quale Metodo Scegliere?**
+
+| Situazione | Metodo Consigliato |
+|------------|-------------------|
+| PC aziendale con restrizioni | **Eseguibile** (Metodo 1) |
+| Uso su chiavetta USB | **Eseguibile** (Metodo 1) |
+| PC personale | **Script Python** (Metodo 2) |
+| Server / Multi-utente | **Docker** (Metodo 3) |
+| Sviluppo / Personalizzazione | **Manuale** (Metodo 4) |
+
+📖 **Guida completa:** Vedi `GUIDA_DISTRIBUZIONE.md` per tutti i dettagli e troubleshooting
 
 ## 📁 Struttura File
 

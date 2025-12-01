@@ -1,0 +1,8 @@
+Flask>=2.3.0
+
+# Per creare eseguibile Windows
+pyinstaller>=6.0.0
+
+# Alternative per app desktop (opzionali)
+# eel>=0.16.0          # Per app desktop Chrome-based
+# auto-py-to-exe>=2.4  # GUI per PyInstaller

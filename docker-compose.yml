@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  calendario:
+    build: .
+    container_name: calendario-presenze
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - FLASK_ENV=production
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    networks:
+      - calendario-net
+
+networks:
+  calendario-net:
+    driver: bridge
