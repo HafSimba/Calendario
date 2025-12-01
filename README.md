@@ -15,18 +15,29 @@ Applicazione web locale e portabile per tracciare le presenze e assenze alle lez
 - ✅ Database SQLite locale (portabile)
 - ✅ Interfaccia moderna e responsive
 
-## 🚀 Avvio Rapido
+## 🚀 Avvio Rapido (100% Automatico)
+
+### Windows - Plug & Play 🎯
+1. **Scarica o copia** l'intera cartella `Calendario` sul tuo PC
+2. **Doppio click** su `run.bat`
+3. **Al primo avvio**: Lo script controllerà automaticamente:
+   - ✅ Se Python è installato (altrimenti ti guiderà all'installazione)
+   - ✅ Se pip è disponibile (altrimenti lo installerà)
+   - ✅ Creerà l'ambiente virtuale
+   - ✅ Installerà le dipendenze (Flask)
+   - ✅ Aprirà il browser sulla pagina dell'app
+4. **Successivi avvii**: Lancio istantaneo, tutto già configurato!
+
+> **Nota**: Se Python non è installato, lo script ti chiederà il permesso e aprirà la pagina di download. Ricordati di selezionare **"Add Python to PATH"** durante l'installazione!
 
 ### Linux / macOS
 ```bash
 chmod +x run.sh
 ./run.sh
 ```
+Lo script installerà automaticamente tutto il necessario al primo avvio.
 
-### Windows
-Doppio click su `run.bat`
-
-### Manuale
+### Avvio Manuale (Opzionale)
 ```bash
 # Crea ambiente virtuale
 python3 -m venv venv
@@ -81,15 +92,23 @@ L'app supporta l'importazione da file CSV con le seguenti colonne:
 
 Vedi `esempio_import.csv` per un esempio completo.
 
-## 🔄 Portabilità
+## 🔄 Portabilità - Copia e Usa Ovunque!
 
-Per trasferire l'app su un altro PC:
+Per trasferire l'app su un altro PC (anche senza Python installato):
 
-1. Copia l'intera cartella `Calendario/`
-2. Sul nuovo PC, esegui `run.sh` (Linux/Mac) o `run.bat` (Windows)
-3. L'ambiente virtuale verrà creato automaticamente
+1. **Copia l'intera cartella** `Calendario/` su una chiavetta USB, cloud, o condivisione di rete
+2. **Sul nuovo PC Windows**:
+   - Incolla la cartella ovunque (Desktop, Documenti, ecc.)
+   - Doppio click su `run.bat`
+   - Se Python non è presente, lo script ti guiderà nell'installazione
+   - Conferma l'installazione delle dipendenze quando richiesto
+3. **Sul nuovo PC Linux/macOS**:
+   - Incolla la cartella e apri il terminale
+   - Esegui: `chmod +x run.sh && ./run.sh`
 
 Il database `data/calendario.db` contiene tutti i dati e viene copiato insieme all'app.
+
+**Zero configurazione richiesta!** L'applicazione è completamente plug-and-play.
 
 ## 🛠️ Requisiti
 

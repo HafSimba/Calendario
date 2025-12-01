@@ -1,0 +1,87 @@
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║     📅  CALENDARIO PRESENZE/ASSENZE                           ║
+║         Guida Rapida - 2 Minuti di Lettura                   ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+
+
+🚀 AVVIO VELOCE
+═══════════════════════════════════════════════════════════════
+
+Windows:
+  1. Doppio click su "run.bat"
+  2. Al primo avvio, conferma l'installazione
+  3. Il browser si aprirà automaticamente!
+
+Linux/macOS:
+  1. Apri terminale nella cartella
+  2. Esegui: chmod +x run.sh && ./run.sh
+  3. Apri browser su: http://127.0.0.1:5000
+
+
+📋 COSA FA IL PRIMO AVVIO?
+═══════════════════════════════════════════════════════════════
+
+✅ Controlla se Python è installato
+   ➜ Se manca, ti guida all'installazione (1 minuto)
+
+✅ Crea ambiente virtuale isolato
+   ➜ Non tocca il tuo sistema
+
+✅ Scarica dipendenze necessarie (Flask - 5MB circa)
+   ➜ Serve connessione internet solo la prima volta
+
+✅ Avvia il server locale
+   ➜ Apre automaticamente il browser
+
+
+🎯 DOPO LA PRIMA VOLTA?
+═══════════════════════════════════════════════════════════════
+
+Doppio click su "run.bat" → Apre subito l'app!
+Tutto è già configurato, avvio istantaneo.
+
+
+📁 TRASFERIRE SU ALTRO PC?
+═══════════════════════════════════════════════════════════════
+
+1. Copia TUTTA la cartella "Calendario"
+2. Incolla sul nuovo PC (anche se non ha Python!)
+3. Doppio click su "run.bat"
+4. Funziona! Il database viaggia con la cartella.
+
+
+🔧 REQUISITI
+═══════════════════════════════════════════════════════════════
+
+• Windows 7/8/10/11 (o Linux/macOS)
+• 50 MB spazio disco
+• Internet SOLO per il primo avvio (download dipendenze)
+
+
+❓ PROBLEMI COMUNI
+═══════════════════════════════════════════════════════════════
+
+❌ "Python non trovato"
+   ➜ Lo script aprirà la pagina di download
+   ➜ Durante installazione: seleziona "Add Python to PATH"
+   ➜ Riavvia "run.bat" dopo aver installato Python
+
+❌ "Porta già in uso"
+   ➜ Chiudi altre istanze dell'app
+   ➜ Oppure riavvia il PC
+
+❌ Pagina non si apre
+   ➜ Apri manualmente: http://127.0.0.1:5000
+
+
+📞 SUPPORTO
+═══════════════════════════════════════════════════════════════
+
+File README.md contiene la documentazione completa
+App completamente offline dopo il primo avvio
+
+
+═══════════════════════════════════════════════════════════════
+Buon lavoro! 🎓
