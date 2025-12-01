@@ -16,11 +16,7 @@
             --border: #dee2e6;
         }
         
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -49,22 +45,10 @@
             gap: 15px;
         }
         
-        header h1 {
-            font-size: 1.8rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        header h1 { font-size: 1.8rem; display: flex; align-items: center; gap: 10px; }
+        header h1::before { content: "📅"; }
         
-        header h1::before {
-            content: "📅";
-        }
-        
-        .header-actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
+        .header-actions { display: flex; gap: 10px; flex-wrap: wrap; }
         
         .btn {
             padding: 10px 20px;
@@ -79,51 +63,36 @@
             gap: 6px;
         }
         
-        .btn-primary {
-            background: white;
-            color: var(--primary);
+        .btn-primary { background: white; color: var(--primary); }
+        .btn-primary:hover { background: var(--light); transform: translateY(-2px); }
+        .btn-success { background: var(--success); color: white; }
+        .btn-success:hover { background: #218838; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-danger:hover { background: #c82333; }
+        .btn-outline { background: transparent; border: 2px solid white; color: white; }
+        .btn-outline:hover { background: white; color: var(--primary); }
+        .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
+        
+        .view-toggle {
+            display: flex;
+            background: rgba(255,255,255,0.2);
+            border-radius: 8px;
+            padding: 4px;
         }
         
-        .btn-primary:hover {
-            background: var(--light);
-            transform: translateY(-2px);
-        }
-        
-        .btn-success {
-            background: var(--success);
-            color: white;
-        }
-        
-        .btn-success:hover {
-            background: #218838;
-        }
-        
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-        }
-        
-        .btn-danger:hover {
-            background: #c82333;
-        }
-        
-        .btn-warning {
-            background: var(--warning);
-            color: var(--dark);
-        }
-        
-        .btn-outline {
+        .view-toggle button {
+            padding: 8px 16px;
+            border: none;
             background: transparent;
-            border: 2px solid white;
             color: white;
+            cursor: pointer;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
         
-        .btn-outline:hover {
-            background: white;
-            color: var(--primary);
-        }
+        .view-toggle button.active { background: white; color: var(--primary); }
         
-        /* Stats Bar */
         .stats-bar {
             background: var(--light);
             padding: 20px 30px;
@@ -133,38 +102,204 @@
             border-bottom: 1px solid var(--border);
         }
         
-        .stat-item {
+        .stat-item { display: flex; flex-direction: column; align-items: center; }
+        .stat-value { font-size: 1.8rem; font-weight: 700; color: var(--primary); }
+        .stat-value.success { color: var(--success); }
+        .stat-value.danger { color: var(--danger); }
+        .stat-label { font-size: 0.85rem; color: #666; text-transform: uppercase; }
+        
+        .filter-bar {
+            padding: 15px 20px;
+            background: white;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .filter-bar input, .filter-bar select {
+            padding: 10px 14px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .filter-bar input:focus, .filter-bar select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* CAROUSEL VIEW */
+        .carousel-container {
+            padding: 40px 20px;
+            position: relative;
+            overflow: hidden;
+            min-height: 300px;
+        }
+        
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: white;
+            border: none;
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+            font-size: 1.5rem;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+        
+        .carousel-nav:hover { transform: translateY(-50%) scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+        .carousel-nav.prev { left: 10px; }
+        .carousel-nav.next { right: 10px; }
+        
+        .carousel-track {
+            display: flex;
+            gap: 20px;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            padding: 20px 60px;
+        }
+        
+        .day-cube {
+            min-width: 200px;
+            height: 200px;
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
         }
         
-        .stat-value {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary);
+        .day-cube:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+        
+        .day-cube.today {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            color: white;
         }
         
-        .stat-value.success { color: var(--success); }
-        .stat-value.danger { color: var(--danger); }
+        .day-cube.today .cube-day-name,
+        .day-cube.today .cube-date,
+        .day-cube.today .cube-lessons { color: white; }
         
-        .stat-label {
-            font-size: 0.85rem;
-            color: #666;
-            text-transform: uppercase;
+        .day-cube.expanded {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) !important;
+            width: 90%;
+            max-width: 600px;
+            height: auto;
+            min-height: 400px;
+            max-height: 80vh;
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 0;
         }
         
-        /* Table Container */
-        .table-container {
-            overflow-x: auto;
+        .cube-day-name { font-size: 1rem; font-weight: 600; color: #666; text-transform: uppercase; }
+        .cube-date { font-size: 3rem; font-weight: 700; color: var(--dark); line-height: 1; }
+        .cube-month { font-size: 1rem; color: #888; margin-top: 5px; }
+        .cube-lessons { position: absolute; bottom: 15px; font-size: 0.85rem; color: #666; }
+        
+        .cube-status {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .cube-status.presente { background: var(--success); }
+        .cube-status.assente { background: var(--danger); }
+        .cube-status.parziale { background: var(--warning); }
+        .cube-status.mixed { background: linear-gradient(135deg, var(--success) 50%, var(--danger) 50%); }
+        
+        .cube-expanded-content { display: none; padding: 25px; width: 100%; }
+        .day-cube.expanded .cube-compact-content { display: none; }
+        .day-cube.expanded .cube-expanded-content { display: block; }
+        
+        .expanded-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .expanded-header h3 { font-size: 1.5rem; color: var(--dark); }
+        
+        .expanded-close {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: var(--light);
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .expanded-close:hover { background: var(--danger); color: white; }
+        
+        .lesson-card {
+            background: var(--light);
+            border-radius: 12px;
             padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--primary);
         }
         
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.95rem;
+        .lesson-card.presente { border-left-color: var(--success); }
+        .lesson-card.assente { border-left-color: var(--danger); }
+        .lesson-card.parziale { border-left-color: var(--warning); }
+        
+        .lesson-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
         }
+        
+        .lesson-card h4 { font-size: 1.1rem; color: var(--dark); margin-bottom: 5px; }
+        .lesson-card .lesson-meta { font-size: 0.9rem; color: #666; }
+        .lesson-card .lesson-time { font-weight: 600; color: var(--primary); }
+        
+        .presence-selector {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .cube-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+        
+        .cube-overlay.active { display: block; }
+        
+        /* TABLE VIEW */
+        .table-container { overflow-x: auto; padding: 20px; }
+        
+        table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
         
         th, td {
             padding: 14px 12px;
@@ -181,9 +316,7 @@
             white-space: nowrap;
         }
         
-        tr:hover {
-            background: #f5f7ff;
-        }
+        tr:hover { background: #f5f7ff; }
         
         .presenza-btn {
             padding: 8px 16px;
@@ -193,26 +326,15 @@
             font-weight: 600;
             font-size: 0.85rem;
             transition: all 0.3s ease;
+            white-space: nowrap;
         }
         
-        .presenza-btn.presente {
-            background: #d4edda;
-            color: #155724;
-        }
+        .presenza-btn.presente { background: #d4edda; color: #155724; }
+        .presenza-btn.assente { background: #f8d7da; color: #721c24; }
+        .presenza-btn.parziale { background: #fff3cd; color: #856404; }
+        .presenza-btn:hover { transform: scale(1.05); }
         
-        .presenza-btn.assente {
-            background: #f8d7da;
-            color: #721c24;
-        }
-        
-        .presenza-btn:hover {
-            transform: scale(1.05);
-        }
-        
-        .actions-cell {
-            display: flex;
-            gap: 8px;
-        }
+        .actions-cell { display: flex; gap: 8px; }
         
         .btn-icon {
             width: 36px;
@@ -227,38 +349,15 @@
             font-size: 1rem;
         }
         
-        .btn-icon.edit {
-            background: #e3f2fd;
-            color: #1976d2;
-        }
+        .btn-icon.edit { background: #e3f2fd; color: #1976d2; }
+        .btn-icon.delete { background: #ffebee; color: #c62828; }
+        .btn-icon:hover { transform: scale(1.1); }
         
-        .btn-icon.delete {
-            background: #ffebee;
-            color: #c62828;
-        }
+        .empty-state { text-align: center; padding: 60px 20px; color: #666; }
+        .empty-state-icon { font-size: 4rem; margin-bottom: 20px; }
+        .empty-state h3 { margin-bottom: 10px; color: var(--dark); }
         
-        .btn-icon:hover {
-            transform: scale(1.1);
-        }
-        
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #666;
-        }
-        
-        .empty-state-icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
-        }
-        
-        .empty-state h3 {
-            margin-bottom: 10px;
-            color: var(--dark);
-        }
-        
-        /* Modal */
+        /* MODALS */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -273,9 +372,7 @@
             padding: 20px;
         }
         
-        .modal-overlay.active {
-            display: flex;
-        }
+        .modal-overlay.active { display: flex; }
         
         .modal {
             background: white;
@@ -288,14 +385,8 @@
         }
         
         @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .modal-header {
@@ -306,10 +397,7 @@
             align-items: center;
         }
         
-        .modal-header h2 {
-            font-size: 1.3rem;
-            color: var(--dark);
-        }
+        .modal-header h2 { font-size: 1.3rem; color: var(--dark); }
         
         .modal-close {
             background: none;
@@ -320,13 +408,8 @@
             padding: 5px;
         }
         
-        .modal-close:hover {
-            color: var(--danger);
-        }
-        
-        .modal-body {
-            padding: 25px;
-        }
+        .modal-close:hover { color: var(--danger); }
+        .modal-body { padding: 25px; }
         
         .form-grid {
             display: grid;
@@ -334,14 +417,8 @@
             gap: 20px;
         }
         
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .form-group.full-width {
-            grid-column: span 2;
-        }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group.full-width { grid-column: span 2; }
         
         .form-group label {
             font-weight: 600;
@@ -375,6 +452,86 @@
             gap: 10px;
         }
         
+        /* Presence Modal */
+        .presence-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .presence-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .presence-option:hover { border-color: var(--primary); }
+        .presence-option.selected { border-color: var(--primary); background: #f0f7ff; }
+        .presence-option.selected.presente { border-color: var(--success); background: #d4edda; }
+        .presence-option.selected.assente-full { border-color: var(--danger); background: #f8d7da; }
+        .presence-option.selected.assente-partial { border-color: var(--warning); background: #fff3cd; }
+        
+        .presence-option input[type="radio"] { display: none; }
+        
+        .presence-option .radio-custom {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            position: relative;
+        }
+        
+        .presence-option.selected .radio-custom::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+        
+        .partial-time-inputs {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: #fff8e1;
+            border-radius: 8px;
+        }
+        
+        .partial-time-inputs.active { display: block; }
+        
+        .partial-time-inputs label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .time-range {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .time-range input[type="time"] {
+            padding: 8px 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .time-range span { font-weight: 600; color: #666; }
+        
         /* Import Modal */
         .import-zone {
             border: 3px dashed var(--border);
@@ -391,14 +548,8 @@
             background: #f0f7ff;
         }
         
-        .import-zone-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-        }
-        
-        .import-zone input[type="file"] {
-            display: none;
-        }
+        .import-zone-icon { font-size: 3rem; margin-bottom: 15px; }
+        .import-zone input[type="file"] { display: none; }
         
         .import-info {
             margin-top: 20px;
@@ -409,7 +560,7 @@
             color: #856404;
         }
         
-        /* Toast Notification */
+        /* Toast */
         .toast {
             position: fixed;
             bottom: 30px;
@@ -424,68 +575,22 @@
         }
         
         @keyframes toastIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .toast.success { background: var(--success); }
         .toast.error { background: var(--danger); }
         .toast.info { background: var(--primary); }
         
-        /* Responsive */
         @media (max-width: 768px) {
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .form-group.full-width {
-                grid-column: span 1;
-            }
-            
-            header {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .stats-bar {
-                justify-content: center;
-            }
-            
-            th, td {
-                padding: 10px 8px;
-                font-size: 0.85rem;
-            }
-        }
-        
-        /* Filter section */
-        .filter-bar {
-            padding: 15px 20px;
-            background: white;
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .filter-bar input,
-        .filter-bar select {
-            padding: 10px 14px;
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            font-size: 0.9rem;
-        }
-        
-        .filter-bar input:focus,
-        .filter-bar select:focus {
-            outline: none;
-            border-color: var(--primary);
+            .form-grid { grid-template-columns: 1fr; }
+            .form-group.full-width { grid-column: span 1; }
+            header { flex-direction: column; text-align: center; }
+            .stats-bar { justify-content: center; }
+            th, td { padding: 10px 8px; font-size: 0.85rem; }
+            .day-cube { min-width: 150px; height: 150px; }
+            .cube-date { font-size: 2rem; }
         }
     </style>
 </head>
@@ -494,13 +599,17 @@
         <header>
             <h1>Calendario Presenze</h1>
             <div class="header-actions">
+                <div class="view-toggle">
+                    <button id="viewCube" class="active" onclick="setView('cube')">🎯 Cubi</button>
+                    <button id="viewList" onclick="setView('list')">📋 Lista</button>
+                </div>
                 <button class="btn btn-primary" onclick="openAddModal()">➕ Nuova Lezione</button>
                 <button class="btn btn-outline" onclick="openImportModal()">📥 Importa CSV</button>
                 <button class="btn btn-outline" onclick="exportCSV()">📤 Esporta CSV</button>
             </div>
         </header>
         
-        <div class="stats-bar" id="statsBar">
+        <div class="stats-bar">
             <div class="stat-item">
                 <span class="stat-value" id="statTotale">0</span>
                 <span class="stat-label">Lezioni Totali</span>
@@ -528,24 +637,31 @@
         </div>
         
         <div class="filter-bar">
-            <input type="text" id="searchInput" placeholder="🔍 Cerca lezione, professore..." oninput="filterTable()">
-            <select id="filterPresenza" onchange="filterTable()">
+            <input type="text" id="searchInput" placeholder="🔍 Cerca lezione, professore..." oninput="applyFilters()">
+            <select id="filterPresenza" onchange="applyFilters()">
                 <option value="">Tutte</option>
                 <option value="presente">Solo Presenze</option>
                 <option value="assente">Solo Assenze</option>
+                <option value="parziale">Assenze Parziali</option>
             </select>
-            <input type="month" id="filterMese" onchange="filterTable()">
+            <input type="month" id="filterMese" onchange="applyFilters()">
         </div>
         
-        <div class="table-container">
+        <div id="carouselView" class="carousel-container">
+            <button class="carousel-nav prev" onclick="carouselPrev()">❮</button>
+            <div class="carousel-track" id="carouselTrack"></div>
+            <button class="carousel-nav next" onclick="carouselNext()">❯</button>
+        </div>
+        <div class="cube-overlay" id="cubeOverlay" onclick="closeExpandedCube()"></div>
+        
+        <div id="tableView" class="table-container" style="display: none;">
             <table id="lezioniTable">
                 <thead>
                     <tr>
                         <th>Giorno</th>
                         <th>Data</th>
                         <th>Aula</th>
-                        <th>Orario Inizio</th>
-                        <th>Orario Fine</th>
+                        <th>Orario</th>
                         <th>Ore</th>
                         <th>Lezione</th>
                         <th>Professore</th>
@@ -553,10 +669,8 @@
                         <th>Azioni</th>
                     </tr>
                 </thead>
-                <tbody id="lezioniBody">
-                </tbody>
+                <tbody id="lezioniBody"></tbody>
             </table>
-            
             <div class="empty-state" id="emptyState" style="display: none;">
                 <div class="empty-state-icon">📚</div>
                 <h3>Nessuna lezione presente</h3>
@@ -565,7 +679,6 @@
         </div>
     </div>
     
-    <!-- Modal Aggiungi/Modifica -->
     <div class="modal-overlay" id="lezioneModal">
         <div class="modal">
             <div class="modal-header">
@@ -617,13 +730,6 @@
                             <label for="professore">Professore</label>
                             <input type="text" id="professore" placeholder="Es. Prof. Rossi">
                         </div>
-                        <div class="form-group">
-                            <label for="presente">Stato Presenza</label>
-                            <select id="presente">
-                                <option value="0">Assente</option>
-                                <option value="1">Presente</option>
-                            </select>
-                        </div>
                         <div class="form-group full-width">
                             <label for="note">Note</label>
                             <textarea id="note" rows="2" placeholder="Note aggiuntive..."></textarea>
@@ -632,13 +738,63 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-outline" onclick="closeModal()" style="color: #666; border-color: #666;">Annulla</button>
+                <button class="btn" onclick="closeModal()" style="background: #eee; color: #666;">Annulla</button>
                 <button class="btn btn-success" onclick="saveLezione()">💾 Salva</button>
             </div>
         </div>
     </div>
     
-    <!-- Modal Import CSV -->
+    <div class="modal-overlay" id="presenzaModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>📋 Gestione Presenza</h2>
+                <button class="modal-close" onclick="closePresenzaModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="presenzaLessonInfo" style="margin-bottom: 20px; padding: 15px; background: var(--light); border-radius: 10px;"></div>
+                <input type="hidden" id="presenzaLezioneId">
+                <input type="hidden" id="presenzaOrarioInizio">
+                <input type="hidden" id="presenzaOrarioFine">
+                <div class="presence-options">
+                    <label class="presence-option" onclick="selectPresenceOption('presente')">
+                        <input type="radio" name="presenzaType" value="presente">
+                        <span class="radio-custom"></span>
+                        <span>✓ <strong>Presente</strong> - Tutta la lezione</span>
+                    </label>
+                    
+                    <label class="presence-option" onclick="selectPresenceOption('assente-full')">
+                        <input type="radio" name="presenzaType" value="assente-full">
+                        <span class="radio-custom"></span>
+                        <span>✗ <strong>Assente</strong> - Tutta la lezione</span>
+                    </label>
+                    
+                    <label class="presence-option" onclick="selectPresenceOption('assente-partial')">
+                        <input type="radio" name="presenzaType" value="assente-partial">
+                        <span class="radio-custom"></span>
+                        <span>⏱ <strong>Assenza parziale</strong> - Specifica orario</span>
+                    </label>
+                </div>
+                
+                <div class="partial-time-inputs" id="partialTimeInputs">
+                    <label>Orario di assenza:</label>
+                    <div class="time-range">
+                        <span>Assente dalle</span>
+                        <input type="time" id="assenzaDa">
+                        <span>alle</span>
+                        <input type="time" id="assenzaA">
+                    </div>
+                    <p style="margin-top: 10px; font-size: 0.85rem; color: #666;">
+                        Le ore di assenza verranno calcolate automaticamente
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closePresenzaModal()" style="background: #eee; color: #666;">Annulla</button>
+                <button class="btn btn-success" onclick="savePresenza()">💾 Salva</button>
+            </div>
+        </div>
+    </div>
+    
     <div class="modal-overlay" id="importModal">
         <div class="modal">
             <div class="modal-header">
@@ -649,9 +805,7 @@
                 <div class="import-zone" id="importZone" onclick="document.getElementById('csvFile').click()">
                     <div class="import-zone-icon">📁</div>
                     <p><strong>Clicca qui</strong> o trascina un file CSV</p>
-                    <p style="font-size: 0.85rem; color: #666; margin-top: 10px;">
-                        Formati supportati: .csv
-                    </p>
+                    <p style="font-size: 0.85rem; color: #666; margin-top: 10px;">Formati supportati: .csv</p>
                     <input type="file" id="csvFile" accept=".csv" onchange="handleFileSelect(event)">
                 </div>
                 <div class="import-info">
@@ -661,332 +815,12 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-outline" onclick="closeImportModal()" style="color: #666; border-color: #666;">Annulla</button>
+                <button class="btn" onclick="closeImportModal()" style="background: #eee; color: #666;">Annulla</button>
                 <button class="btn btn-success" id="importBtn" onclick="uploadCSV()" disabled>📥 Importa</button>
             </div>
         </div>
     </div>
     
-    <script>
-        let lezioni = [];
-        let selectedFile = null;
-        
-        // Inizializzazione
-        document.addEventListener('DOMContentLoaded', () => {
-            loadLezioni();
-            loadStats();
-            setupDragDrop();
-            
-            // Auto-calcola giorno quando si cambia data
-            document.getElementById('data').addEventListener('change', (e) => {
-                const date = new Date(e.target.value);
-                const giorni = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
-                document.getElementById('giorno').value = giorni[date.getDay()];
-            });
-        });
-        
-        // Carica lezioni
-        async function loadLezioni() {
-            try {
-                const response = await fetch('/api/lezioni');
-                lezioni = await response.json();
-                renderTable();
-            } catch (error) {
-                showToast('Errore nel caricamento', 'error');
-            }
-        }
-        
-        // Carica statistiche
-        async function loadStats() {
-            try {
-                const response = await fetch('/api/stats');
-                const stats = await response.json();
-                document.getElementById('statTotale').textContent = stats.totale_lezioni;
-                document.getElementById('statPresenze').textContent = stats.presenze;
-                document.getElementById('statAssenze').textContent = stats.assenze;
-                document.getElementById('statPercentuale').textContent = stats.percentuale_presenza + '%';
-                document.getElementById('statOrePresenti').textContent = stats.ore_presenti;
-                document.getElementById('statOreTotali').textContent = stats.ore_totali;
-            } catch (error) {
-                console.error('Errore stats:', error);
-            }
-        }
-        
-        // Render tabella
-        function renderTable() {
-            const tbody = document.getElementById('lezioniBody');
-            const emptyState = document.getElementById('emptyState');
-            const table = document.getElementById('lezioniTable');
-            
-            // Applica filtri
-            let filtered = filterLezioni();
-            
-            if (filtered.length === 0) {
-                table.style.display = 'none';
-                emptyState.style.display = 'block';
-                return;
-            }
-            
-            table.style.display = 'table';
-            emptyState.style.display = 'none';
-            
-            tbody.innerHTML = filtered.map(l => `
-                <tr>
-                    <td>${l.giorno || '-'}</td>
-                    <td>${formatDate(l.data)}</td>
-                    <td>${l.aula || '-'}</td>
-                    <td>${l.orario_inizio || '-'}</td>
-                    <td>${l.orario_fine || '-'}</td>
-                    <td>${l.totale_ore || '-'}</td>
-                    <td><strong>${l.nome_lezione || '-'}</strong></td>
-                    <td>${l.professore || '-'}</td>
-                    <td>
-                        <button class="presenza-btn ${l.presente ? 'presente' : 'assente'}" 
-                                onclick="togglePresenza(${l.id}, ${!l.presente})">
-                            ${l.presente ? '✓ Presente' : '✗ Assente'}
-                        </button>
-                    </td>
-                    <td class="actions-cell">
-                        <button class="btn-icon edit" onclick="openEditModal(${l.id})" title="Modifica">✏️</button>
-                        <button class="btn-icon delete" onclick="deleteLezione(${l.id})" title="Elimina">🗑️</button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-        
-        // Filtra lezioni
-        function filterLezioni() {
-            const search = document.getElementById('searchInput').value.toLowerCase();
-            const presenza = document.getElementById('filterPresenza').value;
-            const mese = document.getElementById('filterMese').value;
-            
-            return lezioni.filter(l => {
-                // Filtro ricerca
-                const matchSearch = !search || 
-                    (l.nome_lezione && l.nome_lezione.toLowerCase().includes(search)) ||
-                    (l.professore && l.professore.toLowerCase().includes(search)) ||
-                    (l.aula && l.aula.toLowerCase().includes(search));
-                
-                // Filtro presenza
-                const matchPresenza = !presenza || 
-                    (presenza === 'presente' && l.presente) ||
-                    (presenza === 'assente' && !l.presente);
-                
-                // Filtro mese
-                const matchMese = !mese || (l.data && l.data.startsWith(mese));
-                
-                return matchSearch && matchPresenza && matchMese;
-            });
-        }
-        
-        function filterTable() {
-            renderTable();
-        }
-        
-        // Formatta data
-        function formatDate(dateStr) {
-            if (!dateStr) return '-';
-            try {
-                const [year, month, day] = dateStr.split('-');
-                return `${day}/${month}/${year}`;
-            } catch {
-                return dateStr;
-            }
-        }
-        
-        // Toggle presenza
-        async function togglePresenza(id, presente) {
-            try {
-                await fetch(`/api/lezioni/${id}/presenza`, {
-                    method: 'PATCH',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ presente })
-                });
-                await loadLezioni();
-                await loadStats();
-            } catch (error) {
-                showToast('Errore nell\'aggiornamento', 'error');
-            }
-        }
-        
-        // Apri modal aggiungi
-        function openAddModal() {
-            document.getElementById('modalTitle').textContent = 'Nuova Lezione';
-            document.getElementById('lezioneForm').reset();
-            document.getElementById('lezioneId').value = '';
-            document.getElementById('lezioneModal').classList.add('active');
-        }
-        
-        // Apri modal modifica
-        function openEditModal(id) {
-            const lezione = lezioni.find(l => l.id === id);
-            if (!lezione) return;
-            
-            document.getElementById('modalTitle').textContent = 'Modifica Lezione';
-            document.getElementById('lezioneId').value = id;
-            document.getElementById('giorno').value = lezione.giorno || '';
-            document.getElementById('data').value = lezione.data || '';
-            document.getElementById('aula').value = lezione.aula || '';
-            document.getElementById('orarioInizio').value = lezione.orario_inizio || '';
-            document.getElementById('orarioFine').value = lezione.orario_fine || '';
-            document.getElementById('totaleOre').value = lezione.totale_ore || '';
-            document.getElementById('nomeLezione').value = lezione.nome_lezione || '';
-            document.getElementById('professore').value = lezione.professore || '';
-            document.getElementById('presente').value = lezione.presente ? '1' : '0';
-            document.getElementById('note').value = lezione.note || '';
-            
-            document.getElementById('lezioneModal').classList.add('active');
-        }
-        
-        // Chiudi modal
-        function closeModal() {
-            document.getElementById('lezioneModal').classList.remove('active');
-        }
-        
-        // Salva lezione
-        async function saveLezione() {
-            const id = document.getElementById('lezioneId').value;
-            const data = {
-                giorno: document.getElementById('giorno').value,
-                data: document.getElementById('data').value,
-                aula: document.getElementById('aula').value,
-                orario_inizio: document.getElementById('orarioInizio').value,
-                orario_fine: document.getElementById('orarioFine').value,
-                totale_ore: document.getElementById('totaleOre').value || null,
-                nome_lezione: document.getElementById('nomeLezione').value,
-                professore: document.getElementById('professore').value,
-                presente: document.getElementById('presente').value === '1',
-                note: document.getElementById('note').value
-            };
-            
-            try {
-                if (id) {
-                    await fetch(`/api/lezioni/${id}`, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(data)
-                    });
-                    showToast('Lezione aggiornata!', 'success');
-                } else {
-                    await fetch('/api/lezioni', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(data)
-                    });
-                    showToast('Lezione aggiunta!', 'success');
-                }
-                
-                closeModal();
-                await loadLezioni();
-                await loadStats();
-            } catch (error) {
-                showToast('Errore nel salvataggio', 'error');
-            }
-        }
-        
-        // Elimina lezione
-        async function deleteLezione(id) {
-            if (!confirm('Sei sicuro di voler eliminare questa lezione?')) return;
-            
-            try {
-                await fetch(`/api/lezioni/${id}`, { method: 'DELETE' });
-                showToast('Lezione eliminata', 'info');
-                await loadLezioni();
-                await loadStats();
-            } catch (error) {
-                showToast('Errore nell\'eliminazione', 'error');
-            }
-        }
-        
-        // Import CSV
-        function openImportModal() {
-            selectedFile = null;
-            document.getElementById('csvFile').value = '';
-            document.getElementById('importBtn').disabled = true;
-            document.getElementById('importModal').classList.add('active');
-        }
-        
-        function closeImportModal() {
-            document.getElementById('importModal').classList.remove('active');
-        }
-        
-        function handleFileSelect(event) {
-            selectedFile = event.target.files[0];
-            if (selectedFile) {
-                document.getElementById('importBtn').disabled = false;
-                document.querySelector('.import-zone p strong').textContent = selectedFile.name;
-            }
-        }
-        
-        function setupDragDrop() {
-            const zone = document.getElementById('importZone');
-            
-            zone.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                zone.classList.add('dragover');
-            });
-            
-            zone.addEventListener('dragleave', () => {
-                zone.classList.remove('dragover');
-            });
-            
-            zone.addEventListener('drop', (e) => {
-                e.preventDefault();
-                zone.classList.remove('dragover');
-                
-                if (e.dataTransfer.files.length) {
-                    selectedFile = e.dataTransfer.files[0];
-                    document.getElementById('importBtn').disabled = false;
-                    document.querySelector('.import-zone p strong').textContent = selectedFile.name;
-                }
-            });
-        }
-        
-        async function uploadCSV() {
-            if (!selectedFile) return;
-            
-            const formData = new FormData();
-            formData.append('file', selectedFile);
-            
-            try {
-                const response = await fetch('/api/import-csv', {
-                    method: 'POST',
-                    body: formData
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showToast(`Importate ${result.imported} lezioni!`, 'success');
-                    closeImportModal();
-                    await loadLezioni();
-                    await loadStats();
-                } else {
-                    showToast('Errore: ' + result.error, 'error');
-                }
-            } catch (error) {
-                showToast('Errore nell\'importazione', 'error');
-            }
-        }
-        
-        // Export CSV
-        function exportCSV() {
-            window.location.href = '/api/export-csv';
-            showToast('Download avviato!', 'success');
-        }
-        
-        // Toast notification
-        function showToast(message, type = 'info') {
-            const existing = document.querySelector('.toast');
-            if (existing) existing.remove();
-            
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.textContent = message;
-            document.body.appendChild(toast);
-            
-            setTimeout(() => toast.remove(), 3000);
-        }
-    </script>
+    <script src="/static/app.js"></script>
 </body>
 </html>

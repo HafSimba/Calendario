@@ -40,6 +40,8 @@ def init_db():
             nome_lezione TEXT,
             professore TEXT,
             presente INTEGER DEFAULT 0,
+            assenza_da TEXT,
+            assenza_a TEXT,
             note TEXT,
             created_at TEXT DEFAULT CURRENT_TIMESTAMP,
             updated_at TEXT DEFAULT CURRENT_TIMESTAMP
@@ -154,12 +156,18 @@ def delete_lezione(id):
 
 @app.route('/api/lezioni/<int:id>/presenza', methods=['PATCH'])
 def toggle_presenza(id):
-    """Cambia lo stato presenza/assenza."""
+    """Cambia lo stato presenza/assenza con supporto per assenze parziali."""
     data = request.json
+    presente = 1 if data.get('presente') else 0
+    assenza_da = data.get('assenza_da')
+    assenza_a = data.get('assenza_a')
+    
     conn = get_db()
     conn.execute('''
-        UPDATE lezioni SET presente = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?
-    ''', (1 if data.get('presente') else 0, id))
+        UPDATE lezioni SET presente = ?, assenza_da = ?, assenza_a = ?, 
+                          updated_at = CURRENT_TIMESTAMP 
+        WHERE id = ?
+    ''', (presente, assenza_da, assenza_a, id))
     conn.commit()
     conn.close()
     return jsonify({'success': True})
