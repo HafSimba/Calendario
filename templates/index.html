@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario Presenze/Assenze</title>
+    <style>
+        :root {
+            --primary: #4a90d9;
+            --primary-dark: #357abd;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --border: #dee2e6;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #4a90d9 0%, #667eea 100%);
+            color: white;
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        header h1 {
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        header h1::before {
+            content: "📅";
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .btn-primary {
+            background: white;
+            color: var(--primary);
+        }
+        
+        .btn-primary:hover {
+            background: var(--light);
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #218838;
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        
+        .btn-warning {
+            background: var(--warning);
+            color: var(--dark);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+        
+        .btn-outline:hover {
+            background: white;
+            color: var(--primary);
+        }
+        
+        /* Stats Bar */
+        .stats-bar {
+            background: var(--light);
+            padding: 20px 30px;
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .stat-value.success { color: var(--success); }
+        .stat-value.danger { color: var(--danger); }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: #666;
+            text-transform: uppercase;
+        }
+        
+        /* Table Container */
+        .table-container {
+            overflow-x: auto;
+            padding: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+        
+        th, td {
+            padding: 14px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        th {
+            background: var(--light);
+            font-weight: 600;
+            color: var(--dark);
+            position: sticky;
+            top: 0;
+            white-space: nowrap;
+        }
+        
+        tr:hover {
+            background: #f5f7ff;
+        }
+        
+        .presenza-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+        
+        .presenza-btn.presente {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .presenza-btn.assente {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .presenza-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .actions-cell {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .btn-icon.edit {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .btn-icon.delete {
+            background: #ffebee;
+            color: #c62828;
+        }
+        
+        .btn-icon:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+        
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        
+        .empty-state h3 {
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal {
+            background: white;
+            border-radius: 16px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h2 {
+            font-size: 1.3rem;
+            color: var(--dark);
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+            padding: 5px;
+        }
+        
+        .modal-close:hover {
+            color: var(--danger);
+        }
+        
+        .modal-body {
+            padding: 25px;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+        
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 12px 14px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .modal-footer {
+            padding: 20px 25px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        /* Import Modal */
+        .import-zone {
+            border: 3px dashed var(--border);
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .import-zone:hover,
+        .import-zone.dragover {
+            border-color: var(--primary);
+            background: #f0f7ff;
+        }
+        
+        .import-zone-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+        
+        .import-zone input[type="file"] {
+            display: none;
+        }
+        
+        .import-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff3cd;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #856404;
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 16px 24px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            z-index: 2000;
+            animation: toastIn 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .toast.success { background: var(--success); }
+        .toast.error { background: var(--danger); }
+        .toast.info { background: var(--primary); }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+            
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .stats-bar {
+                justify-content: center;
+            }
+            
+            th, td {
+                padding: 10px 8px;
+                font-size: 0.85rem;
+            }
+        }
+        
+        /* Filter section */
+        .filter-bar {
+            padding: 15px 20px;
+            background: white;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .filter-bar input,
+        .filter-bar select {
+            padding: 10px 14px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .filter-bar input:focus,
+        .filter-bar select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Calendario Presenze</h1>
+            <div class="header-actions">
+                <button class="btn btn-primary" onclick="openAddModal()">➕ Nuova Lezione</button>
+                <button class="btn btn-outline" onclick="openImportModal()">📥 Importa CSV</button>
+                <button class="btn btn-outline" onclick="exportCSV()">📤 Esporta CSV</button>
+            </div>
+        </header>
+        
+        <div class="stats-bar" id="statsBar">
+            <div class="stat-item">
+                <span class="stat-value" id="statTotale">0</span>
+                <span class="stat-label">Lezioni Totali</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value success" id="statPresenze">0</span>
+                <span class="stat-label">Presenze</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value danger" id="statAssenze">0</span>
+                <span class="stat-label">Assenze</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value" id="statPercentuale">0%</span>
+                <span class="stat-label">% Presenza</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value success" id="statOrePresenti">0</span>
+                <span class="stat-label">Ore Presenti</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value" id="statOreTotali">0</span>
+                <span class="stat-label">Ore Totali</span>
+            </div>
+        </div>
+        
+        <div class="filter-bar">
+            <input type="text" id="searchInput" placeholder="🔍 Cerca lezione, professore..." oninput="filterTable()">
+            <select id="filterPresenza" onchange="filterTable()">
+                <option value="">Tutte</option>
+                <option value="presente">Solo Presenze</option>
+                <option value="assente">Solo Assenze</option>
+            </select>
+            <input type="month" id="filterMese" onchange="filterTable()">
+        </div>
+        
+        <div class="table-container">
+            <table id="lezioniTable">
+                <thead>
+                    <tr>
+                        <th>Giorno</th>
+                        <th>Data</th>
+                        <th>Aula</th>
+                        <th>Orario Inizio</th>
+                        <th>Orario Fine</th>
+                        <th>Ore</th>
+                        <th>Lezione</th>
+                        <th>Professore</th>
+                        <th>Presenza</th>
+                        <th>Azioni</th>
+                    </tr>
+                </thead>
+                <tbody id="lezioniBody">
+                </tbody>
+            </table>
+            
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <div class="empty-state-icon">📚</div>
+                <h3>Nessuna lezione presente</h3>
+                <p>Aggiungi una nuova lezione o importa un file CSV per iniziare.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal Aggiungi/Modifica -->
+    <div class="modal-overlay" id="lezioneModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modalTitle">Nuova Lezione</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="lezioneForm">
+                    <input type="hidden" id="lezioneId">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="giorno">Giorno</label>
+                            <select id="giorno" required>
+                                <option value="">Seleziona...</option>
+                                <option value="Lunedì">Lunedì</option>
+                                <option value="Martedì">Martedì</option>
+                                <option value="Mercoledì">Mercoledì</option>
+                                <option value="Giovedì">Giovedì</option>
+                                <option value="Venerdì">Venerdì</option>
+                                <option value="Sabato">Sabato</option>
+                                <option value="Domenica">Domenica</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="data">Data</label>
+                            <input type="date" id="data" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="aula">Aula</label>
+                            <input type="text" id="aula" placeholder="Es. Aula 101">
+                        </div>
+                        <div class="form-group">
+                            <label for="orarioInizio">Orario Inizio</label>
+                            <input type="time" id="orarioInizio">
+                        </div>
+                        <div class="form-group">
+                            <label for="orarioFine">Orario Fine</label>
+                            <input type="time" id="orarioFine">
+                        </div>
+                        <div class="form-group">
+                            <label for="totaleOre">Totale Ore (auto)</label>
+                            <input type="number" id="totaleOre" step="0.5" placeholder="Calcolato automaticamente">
+                        </div>
+                        <div class="form-group">
+                            <label for="nomeLezione">Nome Lezione</label>
+                            <input type="text" id="nomeLezione" placeholder="Es. Matematica" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="professore">Professore</label>
+                            <input type="text" id="professore" placeholder="Es. Prof. Rossi">
+                        </div>
+                        <div class="form-group">
+                            <label for="presente">Stato Presenza</label>
+                            <select id="presente">
+                                <option value="0">Assente</option>
+                                <option value="1">Presente</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="note">Note</label>
+                            <textarea id="note" rows="2" placeholder="Note aggiuntive..."></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal()" style="color: #666; border-color: #666;">Annulla</button>
+                <button class="btn btn-success" onclick="saveLezione()">💾 Salva</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal Import CSV -->
+    <div class="modal-overlay" id="importModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>📥 Importa CSV</h2>
+                <button class="modal-close" onclick="closeImportModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="import-zone" id="importZone" onclick="document.getElementById('csvFile').click()">
+                    <div class="import-zone-icon">📁</div>
+                    <p><strong>Clicca qui</strong> o trascina un file CSV</p>
+                    <p style="font-size: 0.85rem; color: #666; margin-top: 10px;">
+                        Formati supportati: .csv
+                    </p>
+                    <input type="file" id="csvFile" accept=".csv" onchange="handleFileSelect(event)">
+                </div>
+                <div class="import-info">
+                    <strong>📋 Formato CSV supportato:</strong><br>
+                    Colonne: giorno; data; aula; orario_inizio; orario_fine; totale_ore; nome_lezione; professore; presente; note<br>
+                    <em>Separatore: punto e virgola (;)</em>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeImportModal()" style="color: #666; border-color: #666;">Annulla</button>
+                <button class="btn btn-success" id="importBtn" onclick="uploadCSV()" disabled>📥 Importa</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let lezioni = [];
+        let selectedFile = null;
+        
+        // Inizializzazione
+        document.addEventListener('DOMContentLoaded', () => {
+            loadLezioni();
+            loadStats();
+            setupDragDrop();
+            
+            // Auto-calcola giorno quando si cambia data
+            document.getElementById('data').addEventListener('change', (e) => {
+                const date = new Date(e.target.value);
+                const giorni = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
+                document.getElementById('giorno').value = giorni[date.getDay()];
+            });
+        });
+        
+        // Carica lezioni
+        async function loadLezioni() {
+            try {
+                const response = await fetch('/api/lezioni');
+                lezioni = await response.json();
+                renderTable();
+            } catch (error) {
+                showToast('Errore nel caricamento', 'error');
+            }
+        }
+        
+        // Carica statistiche
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/stats');
+                const stats = await response.json();
+                document.getElementById('statTotale').textContent = stats.totale_lezioni;
+                document.getElementById('statPresenze').textContent = stats.presenze;
+                document.getElementById('statAssenze').textContent = stats.assenze;
+                document.getElementById('statPercentuale').textContent = stats.percentuale_presenza + '%';
+                document.getElementById('statOrePresenti').textContent = stats.ore_presenti;
+                document.getElementById('statOreTotali').textContent = stats.ore_totali;
+            } catch (error) {
+                console.error('Errore stats:', error);
+            }
+        }
+        
+        // Render tabella
+        function renderTable() {
+            const tbody = document.getElementById('lezioniBody');
+            const emptyState = document.getElementById('emptyState');
+            const table = document.getElementById('lezioniTable');
+            
+            // Applica filtri
+            let filtered = filterLezioni();
+            
+            if (filtered.length === 0) {
+                table.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            table.style.display = 'table';
+            emptyState.style.display = 'none';
+            
+            tbody.innerHTML = filtered.map(l => `
+                <tr>
+                    <td>${l.giorno || '-'}</td>
+                    <td>${formatDate(l.data)}</td>
+                    <td>${l.aula || '-'}</td>
+                    <td>${l.orario_inizio || '-'}</td>
+                    <td>${l.orario_fine || '-'}</td>
+                    <td>${l.totale_ore || '-'}</td>
+                    <td><strong>${l.nome_lezione || '-'}</strong></td>
+                    <td>${l.professore || '-'}</td>
+                    <td>
+                        <button class="presenza-btn ${l.presente ? 'presente' : 'assente'}" 
+                                onclick="togglePresenza(${l.id}, ${!l.presente})">
+                            ${l.presente ? '✓ Presente' : '✗ Assente'}
+                        </button>
+                    </td>
+                    <td class="actions-cell">
+                        <button class="btn-icon edit" onclick="openEditModal(${l.id})" title="Modifica">✏️</button>
+                        <button class="btn-icon delete" onclick="deleteLezione(${l.id})" title="Elimina">🗑️</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        // Filtra lezioni
+        function filterLezioni() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const presenza = document.getElementById('filterPresenza').value;
+            const mese = document.getElementById('filterMese').value;
+            
+            return lezioni.filter(l => {
+                // Filtro ricerca
+                const matchSearch = !search || 
+                    (l.nome_lezione && l.nome_lezione.toLowerCase().includes(search)) ||
+                    (l.professore && l.professore.toLowerCase().includes(search)) ||
+                    (l.aula && l.aula.toLowerCase().includes(search));
+                
+                // Filtro presenza
+                const matchPresenza = !presenza || 
+                    (presenza === 'presente' && l.presente) ||
+                    (presenza === 'assente' && !l.presente);
+                
+                // Filtro mese
+                const matchMese = !mese || (l.data && l.data.startsWith(mese));
+                
+                return matchSearch && matchPresenza && matchMese;
+            });
+        }
+        
+        function filterTable() {
+            renderTable();
+        }
+        
+        // Formatta data
+        function formatDate(dateStr) {
+            if (!dateStr) return '-';
+            try {
+                const [year, month, day] = dateStr.split('-');
+                return `${day}/${month}/${year}`;
+            } catch {
+                return dateStr;
+            }
+        }
+        
+        // Toggle presenza
+        async function togglePresenza(id, presente) {
+            try {
+                await fetch(`/api/lezioni/${id}/presenza`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ presente })
+                });
+                await loadLezioni();
+                await loadStats();
+            } catch (error) {
+                showToast('Errore nell\'aggiornamento', 'error');
+            }
+        }
+        
+        // Apri modal aggiungi
+        function openAddModal() {
+            document.getElementById('modalTitle').textContent = 'Nuova Lezione';
+            document.getElementById('lezioneForm').reset();
+            document.getElementById('lezioneId').value = '';
+            document.getElementById('lezioneModal').classList.add('active');
+        }
+        
+        // Apri modal modifica
+        function openEditModal(id) {
+            const lezione = lezioni.find(l => l.id === id);
+            if (!lezione) return;
+            
+            document.getElementById('modalTitle').textContent = 'Modifica Lezione';
+            document.getElementById('lezioneId').value = id;
+            document.getElementById('giorno').value = lezione.giorno || '';
+            document.getElementById('data').value = lezione.data || '';
+            document.getElementById('aula').value = lezione.aula || '';
+            document.getElementById('orarioInizio').value = lezione.orario_inizio || '';
+            document.getElementById('orarioFine').value = lezione.orario_fine || '';
+            document.getElementById('totaleOre').value = lezione.totale_ore || '';
+            document.getElementById('nomeLezione').value = lezione.nome_lezione || '';
+            document.getElementById('professore').value = lezione.professore || '';
+            document.getElementById('presente').value = lezione.presente ? '1' : '0';
+            document.getElementById('note').value = lezione.note || '';
+            
+            document.getElementById('lezioneModal').classList.add('active');
+        }
+        
+        // Chiudi modal
+        function closeModal() {
+            document.getElementById('lezioneModal').classList.remove('active');
+        }
+        
+        // Salva lezione
+        async function saveLezione() {
+            const id = document.getElementById('lezioneId').value;
+            const data = {
+                giorno: document.getElementById('giorno').value,
+                data: document.getElementById('data').value,
+                aula: document.getElementById('aula').value,
+                orario_inizio: document.getElementById('orarioInizio').value,
+                orario_fine: document.getElementById('orarioFine').value,
+                totale_ore: document.getElementById('totaleOre').value || null,
+                nome_lezione: document.getElementById('nomeLezione').value,
+                professore: document.getElementById('professore').value,
+                presente: document.getElementById('presente').value === '1',
+                note: document.getElementById('note').value
+            };
+            
+            try {
+                if (id) {
+                    await fetch(`/api/lezioni/${id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                    showToast('Lezione aggiornata!', 'success');
+                } else {
+                    await fetch('/api/lezioni', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                    showToast('Lezione aggiunta!', 'success');
+                }
+                
+                closeModal();
+                await loadLezioni();
+                await loadStats();
+            } catch (error) {
+                showToast('Errore nel salvataggio', 'error');
+            }
+        }
+        
+        // Elimina lezione
+        async function deleteLezione(id) {
+            if (!confirm('Sei sicuro di voler eliminare questa lezione?')) return;
+            
+            try {
+                await fetch(`/api/lezioni/${id}`, { method: 'DELETE' });
+                showToast('Lezione eliminata', 'info');
+                await loadLezioni();
+                await loadStats();
+            } catch (error) {
+                showToast('Errore nell\'eliminazione', 'error');
+            }
+        }
+        
+        // Import CSV
+        function openImportModal() {
+            selectedFile = null;
+            document.getElementById('csvFile').value = '';
+            document.getElementById('importBtn').disabled = true;
+            document.getElementById('importModal').classList.add('active');
+        }
+        
+        function closeImportModal() {
+            document.getElementById('importModal').classList.remove('active');
+        }
+        
+        function handleFileSelect(event) {
+            selectedFile = event.target.files[0];
+            if (selectedFile) {
+                document.getElementById('importBtn').disabled = false;
+                document.querySelector('.import-zone p strong').textContent = selectedFile.name;
+            }
+        }
+        
+        function setupDragDrop() {
+            const zone = document.getElementById('importZone');
+            
+            zone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                zone.classList.add('dragover');
+            });
+            
+            zone.addEventListener('dragleave', () => {
+                zone.classList.remove('dragover');
+            });
+            
+            zone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                zone.classList.remove('dragover');
+                
+                if (e.dataTransfer.files.length) {
+                    selectedFile = e.dataTransfer.files[0];
+                    document.getElementById('importBtn').disabled = false;
+                    document.querySelector('.import-zone p strong').textContent = selectedFile.name;
+                }
+            });
+        }
+        
+        async function uploadCSV() {
+            if (!selectedFile) return;
+            
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+            
+            try {
+                const response = await fetch('/api/import-csv', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showToast(`Importate ${result.imported} lezioni!`, 'success');
+                    closeImportModal();
+                    await loadLezioni();
+                    await loadStats();
+                } else {
+                    showToast('Errore: ' + result.error, 'error');
+                }
+            } catch (error) {
+                showToast('Errore nell\'importazione', 'error');
+            }
+        }
+        
+        // Export CSV
+        function exportCSV() {
+            window.location.href = '/api/export-csv';
+            showToast('Download avviato!', 'success');
+        }
+        
+        // Toast notification
+        function showToast(message, type = 'info') {
+            const existing = document.querySelector('.toast');
+            if (existing) existing.remove();
+            
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => toast.remove(), 3000);
+        }
+    </script>
+</body>
+</html>
